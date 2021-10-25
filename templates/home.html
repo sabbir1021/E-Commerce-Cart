@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+   {% block content %}
+    <h2 class="text-center mb-3">Product List </h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-sm-6">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{product.name}}</h5>
+                <p class="card-text">Price : {{product.price}}</p>
+                {% if product.id in items_list %}
+                <a class="btn btn-success" href="{% url 'cart:s_cart' %}">go to cart</a>
+                {% else  %}
+                <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="productId" value="{{product.id}}">
+                <button type="submit" class="btn btn-primary">add to cart</button>
+                </form>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endblock content %}

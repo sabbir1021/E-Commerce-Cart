@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Cart </h2>
+    <table class="table">
+        <thead>
+            <tr>
+            <th>Product Name</th>
+            <th>price</th>
+            <th>Quantity</th>
+            <th>total price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{item.product.name}}</td>
+                <td>{{item.product.price}}</td>
+                <td>
+                 <div class="row">
+                    {{item.quantity}}
+                    <form class="mr-2 ml-5 "  method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="productId" value="{{item.product.id}}">
+                        <input type="hidden" name="operation" value="sub">
+                        <button type="submit" ><i class="fas fa-minus"></i></button>
+                    </form>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="productId" value="{{item.product.id}}">
+                        <input type="hidden" name="operation" value="add">
+                        <button type="submit" ><i class="fas fa-plus"></i></button>
+                    </form>
+                    </div>
+                </td>
+                <td>{{item.get_total}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th>Total</th>
+                <td></td>
+                <td></td>
+                <th>{{order.get_cart_total}}</th>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-success" href=""> Chack Out </a>
+    <a class="btn btn-success float-right mr-5" href="{% url 'cart:home' %}">Continue your shoping... </a>
+{% endblock content %}
